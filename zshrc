@@ -1,12 +1,8 @@
-
 export PKGCONFIG_PATH="/usr/local/lib/pkgconfig:/opt/local/lib/pkgconfig"
-export MAGLEV_HOME=$HOME/dev/ruby/maglev
-export PATH="`cat ~/.paths`:$PATH:$MAGLEV_HOME/bin:~/dev/ruby/rackspace/dev_machine_scripts/bin"
-export SVN_EDITOR="emacs"
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+export SVN_EDITOR='mate -w'
 export MANPATH=/opt/local/man:$MANPATH
-export GEM_PATH=/Library/Ruby/Gems/1.8
-export ANDROID_SDK="$HOME/dev/android/android-sdk-mac_86"
-GREP_OPTIONS="--exclude=\"\(*\.svn*|*\.git*\)\""
+GREP_OPTIONS="--exclude=\"\(*\.svn*|*\.git*\|*\.hg*\)\""
 # number of lines kept in history
 export HISTSIZE=10000
 # number of lines saved in the history after logout
@@ -21,8 +17,7 @@ setopt hist_allow_clobber
 setopt hist_reduce_blanks
 setopt share_history
 
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
+source ~/.sharedrc
 #setopt auto_list list_ambiguous
 
 setopt list_types
@@ -85,12 +80,11 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle ':completion:*' squeeze-slashes true
 
 # named directories
-for i in $HOME/dev/ruby/rackspace/ror/*; do
+for i in $HOME/dev/ruby/boxdice/*; do
 	project=`basename $i`;
 	hash -d $project="$i"
 done
 
-export USE_INDIA_REPO=true
 hash -d DL=~/Downloads
 
 # global aliases
@@ -111,9 +105,7 @@ alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
 alias .......='cd ../../../../../..'
 alias m="mate Rakefile app config db public script stories spec lib"
-alias slapsta="sudo /opt/local/etc/openldap/slapd.sh start"
-alias slapsto="sudo /opt/local/etc/openldap/slapd.sh stop"
-alias startpg="sudo su postgres -c '/opt/local/lib/postgresql83/bin/postgres -D /opt/local/var/db/postgresql83/defaultdb'"
+#alias startpg="sudo su postgres -c '/opt/local/lib/postgresql83/bin/postgres -D /opt/local/var/db/postgresql83/defaultdb'"
 alias ss="NODEPS=true ./script/server"
 alias sc="NODEPS=true ./script/console"
 #find $1 -exec grep -H $2 {} \;-print | awk '{print $1}'
@@ -131,14 +123,6 @@ parse_git_branch() {
  	git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
-function listen () {
-	rake blackbox:integration listen $1
-}
-
-function int () {
-	rake blackbox:integration $1
-}
-
 function wp () {
 	dig +short txt "$1.wp.dg.cx"
 }
@@ -146,9 +130,9 @@ function reals () {
   ls -la "$(print `which $1`)"
 }
 
-function rakeall () {
-	RAILS_ENV=test rake $1 && RAILS_ENV=test_integration rake $1 && RAILS_ENV=development rake $1
-}
+#function rakeall () {
+#	RAILS_ENV=test rake $1 && RAILS_ENV=test_integration rake $1 && RAILS_ENV=development rake $1
+#}
 
 function svnaddall () {
   svn status | grep ^\? | awk '{print "svn add "$2}' | sh
@@ -173,8 +157,8 @@ function capture {
 }
 # Usage:
 # title 'my title'
-source /Users/irfn/.rvm/scripts/rvm 
-
+source /Users/nilakanta/.rvm/scripts/rvm 
+if [[ -s /Users/nilakanta/.rvm/scripts/rvm ]] ; then source /Users/nilakanta/.rvm/scripts/rvm ; fi
 chpwd_rvm() {
     current_version=$(rvm info | grep " version:" | cut -d '"' -f2)
     dir=$(pwd)
